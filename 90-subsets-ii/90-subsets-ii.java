@@ -1,22 +1,23 @@
 class Solution {
     List<List<Integer>> ans;
-    public void findUniqueSubset(int currIdx,HashMap<Integer,Integer>hm,ArrayList<Integer> unique,List<Integer> subans)
+    public void findUniqueSubset(int lastIdx,HashMap<Integer,Integer>hm,ArrayList<Integer> unique,List<Integer> subans)
     {
-        if(currIdx==unique.size())
+         List<Integer> obj=new ArrayList<>(subans);
+        ans.add(obj);
+        for(int i=lastIdx;i<unique.size();i++)
         {
-            List<Integer> obj=new ArrayList<>(subans);
-            ans.add(obj);
-            return ;
-        }
-        int ch=unique.get(currIdx);
-        int freq=hm.get(ch);
-        for(int i=0;i<=freq;i++)
-        {
-       for(int j=1;j<=i;j++)
-           subans.add(ch);
-    findUniqueSubset(currIdx+1,hm,unique,subans);
-        for(int j=1;j<=i;j++)
-           subans.remove(subans.size()-1);
+            
+            int ch=unique.get(i);
+            int freq=hm.get(ch);
+            if(freq>0)
+            {
+                hm.put(ch,freq-1);
+                subans.add(ch);
+                findUniqueSubset(i,hm,unique,subans);
+                subans.remove(subans.size()-1);
+                hm.put(ch,freq);
+            }
+            
         }
     }
     public List<List<Integer>> subsetsWithDup(int[] nums) {
