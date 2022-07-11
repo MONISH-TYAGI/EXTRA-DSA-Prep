@@ -8,9 +8,9 @@ class Solution {
                 max=currSum;
             return;
         }
-        HashMap<Character,Integer> obj=new HashMap<>();
-        for(char ch:hm.keySet())
-            obj.put(ch,hm.get(ch));
+        HashMap<Character,Integer> obj=new HashMap<>(hm);
+        // for(char ch:hm.keySet())
+            // obj.put(ch,hm.get(ch));
             
         findAns(currSum,hm,currIdx+1,words,score);
         int out=0;
