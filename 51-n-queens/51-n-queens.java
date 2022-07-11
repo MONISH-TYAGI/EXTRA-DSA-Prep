@@ -1,19 +1,13 @@
 class Solution {
     List<List<String>> res;
-    public boolean isQueenSafe(boolean [][]vis,int cellNo,int n)
+    public boolean isQueenSafe(boolean [][]vis,int row,int col)
     {
-        int row=cellNo/n;
-        int col=cellNo%n;
-        for(int i=0;i<row;i++)
-        {
-            if(vis[i][col]==true)
+
+        for(int i=0; i<row; i++){
+            if(vis[i][col] == true)
                 return false;
         }
-        for(int j=0;j<col;j++)
-        {
-            if(vis[row][j]==true)
-                return false;
-        }
+
         int i=row;
         int j=col;
         while(i>=0&&j>=0)
@@ -25,7 +19,7 @@ class Solution {
         }
         i=row;
         j=col;
-        while(i>=0&&j<n)
+        while(i>=0&&j<vis.length)
         {
 if(vis[i][j]==true)
                 return false;
@@ -34,11 +28,11 @@ if(vis[i][j]==true)
         }
         return true;
     }
-    public void findChess(boolean [][]vis,int cellNo,int n,int k)
+    public void findChess(int row,int n,boolean[][]vis)
     {
-        if(cellNo==n*n&&k==0)
-        {
-            List<String> ans=new ArrayList<>();
+       if(row==n)
+       {
+                       List<String> ans=new ArrayList<>();
             for(int i=0;i<n;i++)
             {
 String str="";
@@ -57,22 +51,21 @@ String str="";
             }
             res.add(ans);
             return;
-        }
-        if(cellNo==n*n) return ;
-        int row=cellNo/n;
-        int col=cellNo%n;
-        if(isQueenSafe(vis,cellNo,n)==true)
+       }
+        for(int c=0;c<n;c++)
         {
-            vis[row][col]=true;
-            findChess(vis,cellNo+1,n,k-1);
-            vis[row][col]=false;
+            if(vis[row][c]==false&&isQueenSafe(vis,row,c)==true)
+            {
+                vis[row][c]=true;
+                findChess(row+1,n,vis);
+                vis[row][c]=false;
+            }
         }
-        findChess(vis,cellNo+1,n,k);
     }
     public List<List<String>> solveNQueens(int n) {
         res=new ArrayList<>();
  boolean [][]vis=new boolean[n][n];
-        findChess(vis,0,n,n);
+        findChess(0,n,vis);
         return res;
     }
 }
