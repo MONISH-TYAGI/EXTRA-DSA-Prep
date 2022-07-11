@@ -1,11 +1,11 @@
 class Solution {
-    ArrayList<HashSet<Character>> submatrix = new ArrayList<>();
-    ArrayList<HashSet<Character>> cols = new ArrayList<>();
-    ArrayList<HashSet<Character>> rows = new ArrayList<>();
-    
-    public boolean isSudokuValid(char[][] board, int row, int col, char ch){
-        // row element
-        if(rows.get(row).contains(ch) == true){
+    ArrayList<HashSet<Character>> rows;
+    ArrayList<HashSet<Character>> cols;
+    ArrayList<HashSet<Character>> submatrix;
+    public char[][]copyBox;
+    public boolean isValid(int row,int col,char ch)
+    {
+                if(rows.get(row).contains(ch) == true){
             return false;
         }
         
@@ -21,96 +21,101 @@ class Solution {
         }
         
         return true;
-    }
-       public char[][]copyBox=new char[9][9];
 
-    public void solveSudoku(char[][] board, int row, int col){
-        if(row == 9)
+    }
+    public void solveSudoku(char[][]board,int row,int col)
+    {
+        System.out.println(row+"->"+col);
+        if(row==9)
         {
-            for(int i=0;i<9;i++)
-            for(int j=0;j<9;j++)
-                copyBox[i][j]=board[i][j];
-            return ; 
+            System.out.println("hello");
+         for(int i=0;i<9;i++)
+         {
+             for(int j=0;j<9;j++)
+             {
+                 System.out.print(board[i][j]+"->");
+                 copyBox[i][j]=board[i][j];
+             }
+             System.out.println();
+         }
+            return ;
         }
-        // positive base case -> all boxes are filled
-        
-        int nextRow = (col == 8) ? row + 1 : row;
-        int nextCol = (col == 8) ? 0 : col + 1;
-        int subMatrixIdx = ((row/3) * 3) + (col/3);
-            
-//         if(board[row][col] != '.'){
-//             // already filled
-//             boolean res = solveSudoku(board, nextRow, nextCol);
-//             if(res == true) return true;
-            
-//         } else {
-               if(board[row][col] == '.'){  
-            // empty fill -> explore all valid options
-            for(int i=1; i<=9; i++){
-                if(isSudokuValid(board, row, col, (char)(i + '0')) == true){
-                    board[row][col] = (char)(i + '0');
-                    rows.get(row).add((char)(i + '0'));
-                    cols.get(col).add((char)(i + '0'));
-                    submatrix.get(subMatrixIdx).add((char)(i + '0'));
-                    
-                     solveSudoku(board, nextRow, nextCol);
-        
-                    
-                    rows.get(row).remove((char)(i + '0'));
-                    cols.get(col).remove((char)(i + '0'));
-                    submatrix.get(subMatrixIdx).remove((char)(i + '0'));
-                    
-                    board[row][col] = '.';
-                }
-            }
-            
-        }
-        else
-          solveSudoku(board, nextRow, nextCol); // sudoku is not solvable
-        // return true;
-    }
-    
-    public void solveSudoku(char[][] board) {
-        for(int i=0; i<9; i++){
-            HashSet<Character> hm = new HashSet<>();
-            for(int j=0; j<9; j++){
-                if(board[i][j] != '.'){
-                    hm.add(board[i][j]);
-                }
-            }
-            rows.add(hm);
-        }
-        
-        for(int j=0; j<9; j++){
-            HashSet<Character> hm = new HashSet<>();
-            for(int i=0; i<9; i++){
-                if(board[i][j] != '.'){
-                    hm.add(board[i][j]);
-                }
-            }
-            cols.add(hm);
-        }
-        
-        
-        for(int i=0; i<9; i+=3){
-            for(int j=0; j<9; j+=3){
-                HashSet<Character> hm = new HashSet<>();
-                for(int ii=0; ii<3; ii++){
-                    for(int jj=0; jj<3; jj++){
-                        if(board[i + ii][j + jj] != '.'){
-                            hm.add(board[i + ii][j + jj]);
-                        }
-                    }
-                }                
-                submatrix.add(hm);  
-            }
-        }
+        int nextRow=(col==8)?row+1:row;
+        int nextCol=(col==8)?0:col+1;
 
-        
-        
-        solveSudoku(board, 0, 0);
+        int subIdx=((row/3) * 3) + (col/3);
+        if(board[row][col]=='.')
+        {
+            for(int i=1;i<=9;i++)
+            {
+                        char ch=(char)(i+'0');
+                if(isValid(row,col,ch)==true)
+                {
+                    board[row][col]=ch;
+                    rows.get(row).add(ch);
+                    cols.get(col).add(ch);
+                    submatrix.get(subIdx).add(ch);
+                    solveSudoku(board,nextRow,nextCol);
+                     board[row][col]='.';
+                    rows.get(row).remove(ch);
+                    cols.get(col).remove(ch);
+                    submatrix.get(subIdx).remove(ch);
+                }
+            }
+        }else
+            solveSudoku(board,nextRow,nextCol);
+    }
+    public void solveSudoku(char[][] board) {
+        cols=new ArrayList<>();
+        rows=new ArrayList<>();
+        copyBox=new char[9][9];
+        submatrix=new ArrayList<>();
         for(int i=0;i<9;i++)
+        {
+            HashSet<Character> obj=new HashSet<>();
             for(int j=0;j<9;j++)
-                board[i][j]=copyBox[i][j];
+            {
+              if(board[i][j]!='.')
+                  obj.add(board[i][j]);
+            }
+            rows.add(obj);
+        }
+                for(int j=0;j<9;j++)
+        {
+            HashSet<Character> obj=new HashSet<>();
+            for(int i=0;i<9;i++)
+            {
+              if(board[i][j]!='.')
+                  obj.add(board[i][j]);
+            }
+            cols.add(obj);
+        }
+        for(int I=0;I<9;I=I+3)
+        {
+            for(int J=0;J<9;J=J+3)
+            {
+                HashSet<Character> obj=new HashSet<>();
+                for(int i=0;i<3;i++)
+                {
+                    for(int j=0;j<3;j++)
+                    {
+                       if(board[I+i][J+j]!='.')
+                  obj.add(board[I+i][J+j]); 
+                    }
+                }
+            submatrix.add(obj);
+            }
+        }
+        solveSudoku(board,0,0);
+           for(int i=0;i<9;i++)
+         {
+             for(int j=0;j<9;j++)
+             {
+                 // System.out.print(board[i][j]+"->");
+                 board[i][j]=copyBox[i][j];
+             }
+             // System.out.println();
+         }
+
     }
 }
