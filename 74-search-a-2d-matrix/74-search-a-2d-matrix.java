@@ -1,21 +1,35 @@
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        int low=0;
-        int n=matrix.length;
-        int m=matrix[0].length;
-        int high=m*n-1;
-        while(low<=high)
-        {
-           int mid=low+((high-low)/2);
-            int row=mid/m;
-            int col=mid%m;
-            if(matrix[row][col]==target)
+        // Linear Search -> Nested Loops 
+//         int row = matrix.length, col = matrix[0].length;
+//         for(int i=0; i<row; i++){
+//             for(int j=0; j<col; j++){
+//                if(matrix[i][j] == target){
+//                    return true;
+//                }
+//             } 
+//         }
+        
+//         return false;
+        
+        int row = 0, col = matrix[0].length - 1; // Top Right Corner
+        
+        while(row < matrix.length && col >= 0){
+            
+            if(matrix[row][col] == target) 
                 return true;
-           else if(matrix[row][col]>target)
-                high=mid-1;
-            else if(matrix[row][col]<target)
-                low=mid+1;
+            
+            else if(matrix[row][col] < target){
+                // Discard the current row
+                row++;
+            }
+            
+            else {
+                // Discard the current col
+                col--;
+            }
         }
+        
         return false;
     }
 }
