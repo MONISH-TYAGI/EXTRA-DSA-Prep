@@ -1,23 +1,29 @@
 class Solution {
-    public int peakIndexInMountainArray(int[] nums) {
-        int left = 1, right = nums.length - 2;
-        while(left <= right){
-            int mid = left + (right - left) / 2;
+    public int peakIndexInMountainArray(int[] arr) {
+        int low = 1, high = arr.length - 2;
+        while(low <= high){
+            int mid = low + (high - low) / 2;
             
-            if(nums[mid] > nums[mid - 1] && nums[mid] > nums[mid + 1]){
-                // Peak Element 
-                return mid;
-            }
-            
-            else if(nums[mid] < nums[mid + 1]){
-                // Uphill
-                left = mid + 1;
-            } else {
-                // Downhill
-                right = mid - 1;
-            }
+       int lval=(mid-1>=0)?arr[mid-1]:Integer.MIN_VALUE;
+       int rval=(mid+1<arr.length)?arr[mid+1]:Integer.MIN_VALUE;
+       if(arr[mid]>lval&&arr[mid]>rval)
+       {
+        return mid;
+       }
+       else if(lval>arr[mid]&&arr[mid]>rval)
+       {
+        high=mid-1;
+       }
+       else if(lval<arr[mid]&&rval>arr[mid]){
+        low=mid+1;
+       }
+       else
+       {
+        if(arr[low]<=arr[high])low++;
+        else high--;
+       }
         }
+        return -1;
         
-        return 0;
     }
 }
