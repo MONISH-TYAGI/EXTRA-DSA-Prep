@@ -1,23 +1,30 @@
 class Solution {
-    public void swap(int []nums1,int i,int j)
-    {
-        int temp=nums1[i];
-        nums1[i]=nums1[j];
-        nums1[j]=temp;
-    }
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         for(int i=m;i<nums1.length;i++)
             nums1[i]=nums2[i-m];
-        for(int i=m;i<nums1.length;i++)
-        {
-            for(int j=i-1;j>=0;j--)
-            {
-                if(nums1[j]>nums1[j+1])
-                {
-                    swap(nums1,j,j+1);
-                }else
-                    break;
-            }
-        }
+        int prev=0;
+       for(int gap=(n+m)/2;gap>=1;gap=(gap)/2)
+       {
+          if(prev%2==1) gap++;
+           System.out.println("gap->"+gap);
+           for(int i=0;i<nums1.length;i++)
+           {
+               if(i+gap<nums1.length)
+               {
+                  if(nums1[i]>nums1[i+gap])
+                  {
+                      int temp=nums1[i];
+                      nums1[i]=nums1[i+gap];
+                      nums1[i+gap]=temp;
+                  }
+               }else
+               {
+                   prev=gap;
+                   break;
+               }
+           }
+           prev=gap;
+       }
+        // return 0.0;
     }
 }
