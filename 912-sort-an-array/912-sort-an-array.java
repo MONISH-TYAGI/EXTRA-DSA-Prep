@@ -3,14 +3,12 @@
 class Solution {
     
     public void mergeSort(int[] nums, int left, int right){
-        if(left >= right){
-            return; // 0 or 1 elements in array
-        }
-        
-        int mid = left + (right - left) / 2;
-        mergeSort(nums, left, mid); // left Sorted
-        mergeSort(nums, mid + 1, right); // right Sorted
-        merge(nums, left, mid, mid + 1, right);
+        if(left>=right)
+            return;
+int mid=left+(right-left)/2;
+        mergeSort(nums,left,mid);
+        mergeSort(nums,mid+1,right);
+        merge(nums,left,mid,mid+1,right);
     }
     
     public void merge(int[] nums, int a1l, int a1r, int a2l, int a2r){
