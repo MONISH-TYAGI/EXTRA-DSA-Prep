@@ -10,10 +10,15 @@ class Solution {
             int rval=(mid+1<arr.length)?arr[mid+1]:Integer.MIN_VALUE;
             if(tar>lval&&tar>rval)
                 return mid;
-            if(lval<tar)
+           else if(lval<tar&&tar<rval)
                 low=mid+1;
-            else
+          else   if(lval>tar&&tar>rval)
                 high=mid-1;
+            else
+            {
+                if(lval<=tar)low++;
+                else high--;
+            }
         }
         return -1;
     }
