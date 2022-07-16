@@ -10,7 +10,7 @@ class Solution {
        {
         return mid;
        }
-if(lval<(long)arr[mid])
+if(lval<arr[mid])
 {
     low=mid+1;
 }else
