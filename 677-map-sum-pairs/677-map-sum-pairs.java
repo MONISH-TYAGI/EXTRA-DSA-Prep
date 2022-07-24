@@ -8,8 +8,8 @@ class MapSum {
         }
  
         public void add(char ch){
-            Node newNode = new Node();
-            links[ch - 'a'] = newNode;
+ 
+            links[ch - 'a'] =new Node();
         }
  
         public int getEnd(){
