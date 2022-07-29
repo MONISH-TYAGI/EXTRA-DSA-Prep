@@ -37,7 +37,7 @@ class Solution {
 ArrayList<Integer> obj=new ArrayList<>();
                 DFS(vis,g,i,obj);
                 // System.out.println(obj.size());
-                count+=(long)(obj.size()*(n*1l-obj.size()));
+                count+=(obj.size()*(long)(n-obj.size()));
             }
         }
 return count/2;
