@@ -1,19 +1,19 @@
 class Solution {
-    public void fillColor(int [][]image,int sr,int sc,int oldColor,int newColor)
+    public void paint(int [][]image,int row,int col,int color,int prevColor)
     {
-        if(sr<0||sc<0||sr>=image.length||sc>=image[0].length||image[sr][sc]!=oldColor)
-            return ;
-        image[sr][sc]=newColor;
-        fillColor(image,sr+1,sc,oldColor,newColor);
-        fillColor(image,sr,sc+1,oldColor,newColor);
-        fillColor(image,sr-1,sc,oldColor,newColor);
-        fillColor(image,sr,sc-1,oldColor,newColor);
+        if(row<0||col<0||row>=image.length||col>=image[0].length) return ;
+        if(image[row][col]!=prevColor) return ;
+     image[row][col]=color;
+        paint(image,row+1,col,color,prevColor);
+        paint(image,row,col+1,color,prevColor);
+        paint(image,row-1,col,color,prevColor);
+        paint(image,row,col-1,color,prevColor);
+        
     }
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        if(image[sr][sc]==color)
-            return image;
-        
-            fillColor(image,sr,sc,image[sr][sc],color);
+      if(image[sr][sc]==color)
+          return image;
+        paint(image,sr,sc,color,image[sr][sc]);
         return image;
     }
 }
