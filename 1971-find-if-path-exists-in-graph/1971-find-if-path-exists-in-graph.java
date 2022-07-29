@@ -1,11 +1,14 @@
 class Solution {
     class Graph{
-        ArrayList<Integer>[]adj;
+        public ArrayList<Integer>[]adj;
 Graph(int n)
 {
     adj=new ArrayList[n];
     for(int i=0;i<n;i++)
+    {
         adj[i]=new ArrayList<>();
+
+    }
 }
         public void addEdge(int src,int dest)
         {
@@ -16,23 +19,22 @@ Graph(int n)
     public boolean DFS(int src,int dest,boolean []vis,Graph g)
     {
         if(src==dest) return true;
-        if(vis[src]==true)
-            return false;
+        if(vis[src]==true) return false;
         vis[src]=true;
         for(int nbr:g.adj[src])
         {
- if(DFS(nbr,dest,vis,g)==true)
-     return true;
+            if(DFS(nbr,dest,vis,g)==true)
+                return true;
         }
         return false;
     }
-    public boolean validPath(int n, int[][] edges, int source, int destination) {
-        Graph g=new Graph(n);
+    public boolean validPath(int n, int[][] edges, int src, int dest) {
+       Graph g=new Graph(n);
         for(int i=0;i<edges.length;i++)
         {
-          g.addEdge(edges[i][0],edges[i][1]);  
+            g.addEdge(edges[i][0],edges[i][1]);
         }
         boolean []vis=new boolean[n];
-        return DFS(source,destination,vis,g);
+        return DFS(src,dest,vis,g);
     }
 }
