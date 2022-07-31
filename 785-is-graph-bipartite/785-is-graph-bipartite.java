@@ -1,31 +1,27 @@
 class Solution {
-    public boolean DFS(int src, int level, int[][] graph, int[] vis){
-        if(vis[src] != -1){
-            if(vis[src] != level) return false;
-            return true;
+    public boolean DFS(int curr,int level,int []visited,int [][]graph)
+    {
+        if(visited[curr]!=-1)
+        {
+            if(visited[curr]==level%2) return true;
+            return false;
         }
-        
-        vis[src] = level;
-        for(int nbr: graph[src]){
-            if(DFS(nbr, 1 - level, graph, vis) == false){
-                // Cycle of Odd Length
+        visited[curr]=level%2;
+        for(int nbr=0;nbr<graph[curr].length;nbr++)
+        {
+            if(DFS(graph[curr][nbr],level+1,visited,graph)==false)
                 return false;
-            }
         }
-        
         return true;
     }
-    
     public boolean isBipartite(int[][] graph) {
-        int[] vis = new int[graph.length];
-        Arrays.fill(vis, -1);
-        
-        for(int i=0; i<graph.length; i++){
-            if(vis[i] == -1 && DFS(i, 0, graph, vis) == false){
+        int []visited=new int[graph.length];
+        Arrays.fill(visited,-1);
+        for(int i=0;i<graph.length;i++)
+        {
+            if(visited[i]==-1&&DFS(i,0,visited,graph)==false)
                 return false;
-            } 
         }
-        
         return true;
     }
 }
