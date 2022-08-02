@@ -1,70 +1,82 @@
 class Solution {
-    public static class Pair{
-        int src; // Cell in Graph
-        int dist; // Number of Dice Rolls
-        Pair(int src, int dist){
-            this.src = src;
-            this.dist = dist;
-        }
-    }
-    
-    public int BFS(ArrayList<Integer>[] adj){
-        Queue<Pair> q = new LinkedList<>();
-        q.add(new Pair(1, 0));
-        
-        int[] vis = new int[adj.length + 1];
-        Arrays.fill(vis, -1);
-        
-        while(q.size() > 0){
-            Pair front = q.remove();
-            
-            if(vis[front.src] != -1) continue;
-            vis[front.src] = front.dist;
-            
-            for(Integer nbr: adj[front.src]){
-                q.add(new Pair(nbr, front.dist + 1));
-            }
-        }
-        
-        return vis[adj.length - 1];
-    }
-    
-    public int snakesAndLadders(int[][] matrix) {
-        ArrayList<Integer> board = new ArrayList<>();
-        board.add(0); // 1-based indexing
-        
-        int level = 0, cell = 1;
-        for(int i=matrix.length-1; i>=0; i--){
-            if(level % 2 == 0){
-                // left to right
-                for(int j=0; j<matrix.length; j++){
-                    if(matrix[i][j] == -1)
-                        board.add(cell);
-                    else board.add(matrix[i][j]); // snake or ladder
-                    cell++;
-                }
-            } else {
-                // right to left
-                for(int j=matrix.length-1; j>=0; j--){
-                    if(matrix[i][j] == -1)
-                        board.add(cell);
-                    else board.add(matrix[i][j]); // snake or ladder
-                    cell++;
-                }
+    public int snakesAndLadders(int[][] board) {
+        ArrayList<Integer> gameCell=new ArrayList<>();
+        gameCell.add(0);
+        int level=0;
+        int cell=1;
+        for(int i=board.length-1;i>=0;i--)
+        {
+            if(level%2==0)
+            {
+              for(int j=0;j<board[i].length;j++)
+              {
+                  if(board[i][j]==-1)
+                  gameCell.add(cell);
+                  else
+                      gameCell.add(board[i][j]);
+                  cell++;
+              }
+            }else
+            {
+             for(int j=board[0].length-1;j>=0;j--)
+              {
+                  if(board[i][j]==-1)
+                  gameCell.add(cell);
+                  else
+                      gameCell.add(board[i][j]);
+                  cell++;
+              }  
             }
             level++;
         }
-        
-        int size = matrix.length * matrix.length;
-        ArrayList<Integer>[] adj = new ArrayList[size + 1];
-        for(cell=1; cell<=size; cell++){
-            adj[cell] = new ArrayList<>();
-            for(int d=1; d<=6 && cell + d <= size; d++){
-                if(cell == board.get(cell + d)) continue;
-                adj[cell].add(board.get(cell + d));
+        // System.out.println(gameCell);
+        int size=board.length*board[0].length;
+        ArrayList<Integer>[]adj=new ArrayList[size+1];
+        for(int i=0;i<=size;i++)
+            adj[i]=new ArrayList<>();
+        for(int i=1;i<=size;i++)
+        {
+            for(int j=1;j<=6;j++)
+            {
+                if(i+j<=size&&gameCell.get(i+j)!=i)
+                {
+                    // System.out.println("->"+i+j);
+                adj[i].add(gameCell.get(i+j));
+                }
             }
         }
-        
         return BFS(adj);
+    }
+    class Pair{
+        int curr;
+        int move;
+        Pair(int curr,int move)
+        {
+            this.curr=curr;
+            this.move=move;
+        }
+    }
+    public int BFS(ArrayList<Integer>[]adj)
+    {
+        Queue<Pair>q =new ArrayDeque<>();
+        q.add(new Pair(1,0));
+        //System.out.println("->"+adj.length);
+        int []vis=new int[adj.length];
+        Arrays.fill(vis,-1);
+        while(q.size()>0)
+        {
+            Pair front=q.remove();
+            if(vis[front.curr]!=-1)
+                continue;
+            vis[front.curr]=front.move;
+            for(int nbr:adj[front.curr])
+            {
+                q.add(new Pair(nbr,front.move+1));
+            }
+        }
+//         System.out.println();
+// for(int a:vis)
+//     System.out.print(a+" ");
+        return vis[adj.length-1];
     }
 }
