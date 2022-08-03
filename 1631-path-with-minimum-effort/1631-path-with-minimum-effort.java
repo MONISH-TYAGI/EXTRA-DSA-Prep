@@ -1,51 +1,44 @@
 class Solution {
-    public static class Pair{
-        int row, col, val, dist;
-        
-        Pair(int row, int col, int val, int dist){
-            this.row = row;
-            this.col = col;
-            this.val = val;
-            this.dist = dist;
+    class Pair implements Comparable<Pair>{
+        int node;
+        int jump;
+        int maxDist;
+        int row;
+        int col;
+        Pair(int row,int col,int jump,int maxDist)
+        {
+            this.row=row;
+            this.col=col;
+            this.jump=jump;
+            this.maxDist=maxDist;
         }
-    }
-    
-    public static class DiffComparator implements Comparator<Pair>{
-        public int compare(Pair a, Pair b){
-            return a.dist - b.dist;
-            // Path with Minimum Effort -> Min Priority Queue
+        public int compareTo(Pair other)
+        {
+            return this.jump-other.jump;
         }
-    }
         
-    public int[][] dir = {{+1, 0}, {-1, 0}, {0, +1}, {0, -1}};
-    
+    }
+    int [][]dir={{0,1},{1,0},{-1,0},{0,-1}};
     public int minimumEffortPath(int[][] mat) {
-        PriorityQueue<Pair> q = new PriorityQueue<>(new DiffComparator());
-        q.add(new Pair(0, 0, mat[0][0], 0));
-        
-        while(q.size() > 0){
-            Pair top = q.remove();
-            
-            if(top.row == mat.length - 1 && top.col == mat[0].length - 1){
-                return top.dist;
-            }
-            
-            if(mat[top.row][top.col] == -1) continue; // visited
-            
-            for(int d=0; d<4; d++){
-                int nr = top.row + dir[d][0];
-                int nc = top.col + dir[d][1];
-                
-                if(nr < 0 || nc < 0 || nr >= mat.length || nc >= mat[0].length)
+      PriorityQueue<Pair> pq=new PriorityQueue<>();  
+        pq.add(new Pair(0,0,0,0));
+        while(pq.size()>0)
+        {
+            Pair front=pq.remove();
+            if(front.row==mat.length-1&&front.col==mat[0].length-1) return front.maxDist;
+            if(mat[front.row][front.col]==-1) continue;
+            for(int i=0;i<4;i++)
+            {
+             int nr=front.row+dir[i][0];
+                int nc=front.col+dir[i][1];
+                if(nr<0||nc<0||nr>=mat.length||nc>=mat[0].length)
                     continue;
-                
-                int nd = Math.max(top.dist, Math.abs(mat[top.row][top.col] - mat[nr][nc]));
-                q.add(new Pair(nr, nc, mat[nr][nc], nd));
+                int jump=Math.abs(mat[front.row][front.col]-mat[nr][nc]);
+                int max=Math.max(jump,front.maxDist);
+             pq.add(new Pair(nr,nc,jump,max)); 
             }
-            
-            mat[top.row][top.col] = -1;
+            mat[front.row][front.col]=-1;
         }
-        
         return 0;
     }
 }
