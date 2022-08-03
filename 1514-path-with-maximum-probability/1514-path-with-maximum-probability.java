@@ -1,48 +1,47 @@
 class Solution {
-    public static class Pair implements Comparable<Pair>{
+    class Pair implements Comparable<Pair>
+    {
         int node;
-        double weight;
-        
-        public Pair(int node, double weight){
-            this.node = node;
-            this.weight = weight;
+        double prob;
+        Pair(int node,double prob)
+        {
+            this.node=node;
+            this.prob=prob;
         }
-        
-        @Override
-        public int compareTo(Pair other){
-            if(other.weight > this.weight) return +1;
-            if(other.weight == this.weight) return 0;
-            return -1; 
-            // Max Priority Queue
+        public int compareTo(Pair other)
+        {
+            if(this.prob-other.prob<0) return 1;
+            if(this.prob-other.prob>0) return -1;
+            return 0;
         }
     }
-    
-    public double maxProbability(int n, int[][] edges, double[] prob, int start, int end) {
-        ArrayList<Pair>[] adj = new ArrayList[n];
-        for(int i=0; i<n; i++) adj[i] = new ArrayList<>();
-        
-        int i = 0;
-        for(int[] edge: edges){
-            // edge[0] -> source, edge[1] -> destination, edge[2] -> cost
-            adj[edge[0]].add(new Pair(edge[1], prob[i])); // Directed
-            adj[edge[1]].add(new Pair(edge[0], prob[i++])); // Undirected
-        }
-        
-        PriorityQueue<Pair> q = new PriorityQueue<>();
-        q.add(new Pair(start, 1.0));
-        double[] vis = new double[n];
-        Arrays.fill(vis, -1); // Unvisited Node -> +Inf
-        
-        while(q.size() > 0){
-            Pair top = q.remove();
-            if(vis[top.node] != -1) continue;
-            vis[top.node] = top.weight;
-            
-            for(Pair nbr: adj[top.node]){
-                q.add(new Pair(nbr.node, top.weight * nbr.weight));
-            }
-        }
-        
-        return (vis[end] == -1) ? 0 : vis[end];
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        ArrayList<Pair> []adj=new ArrayList[n];
+        for(int i=0;i<n;i++)
+            adj[i]=new ArrayList<>();
+       for(int i=0;i<edges.length;i++)
+    {
+        adj[edges[i][0]].add(new Pair(edges[i][1],succProb[i]));
+    adj[edges[i][1]].add(new Pair(edges[i][0],succProb[i]));
     }
+        PriorityQueue<Pair> pq=new PriorityQueue<>();
+                        double[]visited=new double[n];
+                        Arrays.fill(visited,-1);
+    pq.add(new Pair(start,1.0));       
+          while(pq.size()>0)
+ {
+     Pair front=pq.remove();
+              // System.out.println(front.prob);
+     if(visited[front.node]!=-1) continue;
+     visited[front.node]=front.prob;
+     for(Pair nbr:adj[front.node])
+     {
+        pq.add(new Pair(nbr.node,front.prob*nbr.prob));
+     }
+                            
+   }
+if(visited[end]!=-1)
+        return visited[end];
+    return 0;
+                        }
 }
