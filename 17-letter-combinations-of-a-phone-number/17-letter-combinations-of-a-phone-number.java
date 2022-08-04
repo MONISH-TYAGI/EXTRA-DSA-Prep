@@ -1,25 +1,32 @@
 class Solution {
-    List<String> res;
-    String []comb={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
-    public void findComb(int idx,String asf,String input)
-    {
-        if(idx==input.length())
-        {
-            res.add(asf);
-            return ;
-        }
-      int currIdx=input.charAt(idx)-'0';
-        String curr=comb[currIdx];
-        for(int i=0;i<curr.length();i++)
-        {
-            findComb(idx+1,asf+curr.charAt(i),input);
-        }
-    }
+    final  String[] codes ={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
     public List<String> letterCombinations(String digits) {
-        res=new ArrayList<>();
+
+              List<String> res=new ArrayList<>();
         if(digits.length()==0)
             return res;
-        findComb(0,"",digits);
-        return res;
+       return findComb(digits);
+
+    }
+    public List<String> findComb(String digits)
+    {
+                if(digits.length()==0){
+            List<String> base = new ArrayList<>();
+            base.add("");
+            return base;
+        }
+        char ch =digits.charAt(0);
+        String ros =digits.substring(1);
+        List<String> ans =findComb(ros);
+        List<String> man = new ArrayList<>();
+        String codesfor =codes[ch-'0'];
+        for(int i=0;i<codesfor.length();i++){
+            char chode =codesfor.charAt(i);
+            for(String val:ans){
+            man.add(chode + val);
+            }
+        }
+       
+        return man;
     }
 }
