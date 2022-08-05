@@ -64,7 +64,8 @@ class Solution {
             {
                 curr=curr.get(ch);
                 findList(curr,subans,searchWord.substring(0,i+1));
-                ans.add(subans);
+              ans.add(subans);
+                
             }else break;
             
         }
