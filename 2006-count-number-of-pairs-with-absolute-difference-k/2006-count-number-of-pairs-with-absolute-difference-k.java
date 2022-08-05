@@ -10,7 +10,7 @@ class Solution {
             int freq1 = freq.get(key);
 
             if (k == 0) {
-                count = count + (k * (k - 1)) / 2;
+                count = count + 0;
             } else {
                 int freq2 = freq.getOrDefault(k + key, 0);
                 count = count + freq1 * freq2;
