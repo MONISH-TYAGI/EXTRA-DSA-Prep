@@ -31,21 +31,21 @@ class Solution {
                 int bit = (nums[i]&(1<<j)) > 0 ? 1 : 0;
                 if (bit == 0) {
                     if (curr.children[1] != null) {
-                        val = val*2 + 1;
+                        val = (val<<1) + 1;
                         curr = curr.children[1];
                     }
                     else {
-                        val = val*2;
+                        val = (val<<1);
                         curr = curr.children[0];
                     }
                 }
                 else {
                     if (curr.children[0] != null) {
-                        val = val*2 + 1;
+                        val = (val<<1) + 1;
                         curr = curr.children[0];
                     }
                     else {
-                        val = val*2;
+                        val =(val<<1);
                         curr = curr.children[1];
                     }
                 }
