@@ -1,5 +1,5 @@
 class Solution {
-    static class DSU {
+      class DSU {
         int[] parent;
         int[] rank;
 
@@ -32,18 +32,19 @@ class Solution {
             return parent[a] = find(parent[a]);
         }
     }
-
     public int[] findRedundantConnection(int[][] edges) {
-        DSU sets = new DSU(1001);
-
-        for (int[] edge : edges) {
-            int a = edge[0], b = edge[1];
-            if (sets.find(a) == sets.find(b)) {
-                return edge; // CYCLE FOUND
-            }
-            sets.union(a, b);
+        DSU sets=new DSU(10005);
+        int []ans=new int[2];
+        for(int i=0;i<edges.length;i++)
+        {
+         if(sets.find(edges[i][0])==sets.find(edges[i][1]))
+         {
+             ans[0]=edges[i][0];
+             ans[1]=edges[i][1];
+             continue;
+         }
+            sets.union(edges[i][0],edges[i][1]);
         }
-
-        return null;
+        return ans;
     }
 }
