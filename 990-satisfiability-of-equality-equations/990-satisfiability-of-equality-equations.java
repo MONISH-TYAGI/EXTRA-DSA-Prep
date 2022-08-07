@@ -1,5 +1,5 @@
 class Solution {
-    static class DSU {
+         class DSU {
         int[] parent;
         int[] rank;
 
@@ -32,26 +32,28 @@ class Solution {
             return parent[a] = find(parent[a]);
         }
     }
-
     public boolean equationsPossible(String[] equations) {
-        DSU sets = new DSU(26);
-        for (String eqn : equations) {
-            int left = eqn.charAt(0) - 'a';
-            int right = eqn.charAt(3) - 'a';
-
-            if (eqn.charAt(1) == '=')
-                sets.union(left, right);
+        DSU sets=new DSU(27);
+        for(int i=0;i<equations.length;i++)
+        {
+            char ch=equations[i].charAt(1);
+            if(ch=='=')
+            {
+                int first=equations[i].charAt(0)-'a';
+                int second=equations[i].charAt(3)-'a';
+                sets.union(first,second);
+            }
         }
-
-        for (String eqn : equations) {
-            int left = eqn.charAt(0) - 'a';
-            int right = eqn.charAt(3) - 'a';
-
-            if (eqn.charAt(1) == '!' && sets.find(left) == sets.find(right))
-                return false;
+           for(int i=0;i<equations.length;i++)
+        {
+            char ch=equations[i].charAt(1);
+            if(ch=='!')
+            {
+                int first=equations[i].charAt(0)-'a';
+                int second=equations[i].charAt(3)-'a';
+                if(sets.find(first)==sets.find(second)) return false;
+            }
         }
-
         return true;
     }
-
 }
