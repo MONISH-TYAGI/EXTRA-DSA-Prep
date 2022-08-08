@@ -1,12 +1,11 @@
 class Solution {
-    static class DSU {
+        static class DSU {
         int[] parent;
         int[] rank;
 
         DSU(int n) {
             parent = new int[n];
             Arrays.fill(parent, -1);
-
             rank = new int[n];
             Arrays.fill(rank, 1);
         }
@@ -32,32 +31,36 @@ class Solution {
             return parent[a] = find(parent[a]);
         }
     }
-
-    public boolean isSimilar(String a, String b) {
-        int count = 0;
-        for (int i = 0; i < a.length(); i++) {
-            if (a.charAt(i) != b.charAt(i))
-                count++;
-        }
-        if (count <= 2)
-            return true;
-        return false;
+public boolean isSimilar(String a,String b)
+{
+ if(a.length()!=b.length())
+     return false;
+    if(a.equals(b)==true) return true;
+    int count=0;
+    for(int i=0;i<a.length();i++)
+    {
+ if(a.charAt(i)!=b.charAt(i))
+     count++;
     }
-
+    if(count==2) return true;
+    return false;
+}
     public int numSimilarGroups(String[] strs) {
-        DSU sets = new DSU(strs.length);
-
-        for (int i = 0; i < strs.length; i++)
-            for (int j = i + 1; j < strs.length; j++)
-                if (isSimilar(strs[i], strs[j]) == true)
-                    sets.union(i, j);
-
-        int groups = 0;
-        for (int i = 0; i < strs.length; i++) {
-            if (sets.find(i) == i)
-                groups++;
+        DSU sets=new DSU(strs.length+1);
+       for(int i=0;i<strs.length;i++)
+       {
+           for(int j=i+1;j<strs.length;j++)
+           {
+               if(isSimilar(strs[i],strs[j])==true)
+                   sets.union(i,j);
+           }
+       }
+        int group=0;
+        for(int i=0;i<strs.length;i++)
+        {
+            if(sets.find(i)==i)
+                group++;
         }
-
-        return groups;
+        return group;
     }
 }
