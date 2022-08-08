@@ -1,31 +1,27 @@
 class Solution {
     List<String> path;
-
-    public void DFS(String src, HashMap<String, PriorityQueue<String>> adj) {
-        while (adj.get(src).size() > 0) {
-            String nbr = adj.get(src).remove();
-            DFS(nbr, adj);
+    public void DFS(String curr,HashMap<String,PriorityQueue<String>> adj)
+    {
+        while(adj.get(curr).size()>0)
+        {
+            String nbr=adj.get(curr).remove();
+            DFS(nbr,adj);
         }
-
-        path.add(src);
+        path.add(curr);
     }
-
     public List<String> findItinerary(List<List<String>> tickets) {
-        HashMap<String, PriorityQueue<String>> adj = new HashMap<>();
-        for (List<String> ticket : tickets) {
-            String src = ticket.get(0);
-            String dest = ticket.get(1);
-
-            if (adj.containsKey(src) == false)
-                adj.put(src, new PriorityQueue<>());
-            if (adj.containsKey(dest) == false)
-                adj.put(dest, new PriorityQueue<>());
-
-            adj.get(src).add(dest);
+        HashMap<String,PriorityQueue<String>> adj=new HashMap<>();
+        for(int i=0;i<tickets.size();i++)
+        {
+            List<String> curr=tickets.get(i);
+            if(adj.containsKey(curr.get(0))==false)
+                adj.put(curr.get(0),new PriorityQueue<>());
+                if(adj.containsKey(curr.get(1))==false)
+                adj.put(curr.get(1),new PriorityQueue<>());
+            adj.get(curr.get(0)).add(curr.get(1));
         }
-
-        path = new ArrayList<>();
-        DFS("JFK", adj);
+      path=new ArrayList<>();
+DFS("JFK",adj);
         Collections.reverse(path);
         return path;
     }
