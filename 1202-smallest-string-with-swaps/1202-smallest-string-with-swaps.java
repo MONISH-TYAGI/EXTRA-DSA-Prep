@@ -1,5 +1,4 @@
-
-
+class Solution {
 class DSU {
     int[] parent;
 
@@ -24,29 +23,38 @@ class DSU {
             return a;
         return parent[a] = find(parent[a]);
     }
-}
-
-class Solution {
+    }
     public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
-        DSU sets = new DSU(s.length());
-        for (List<Integer> pair : pairs)
-            sets.union(pair.get(0), pair.get(1));
-
-        HashMap<Integer, List<Integer>> idx = new HashMap<>();
-        HashMap<Integer, List<Character>> ch = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            idx.put(i, new ArrayList<>());
-            idx.get(sets.find(i)).add(i);
-
-            ch.put(i, new ArrayList<>());
-            ch.get(sets.find(i)).add(s.charAt(i));
-        }
-
-        StringBuilder res = new StringBuilder(s);
-        for (int i = 0; i < s.length(); i++) {
-            Collections.sort(ch.get(i));
-            for (int j = 0; j < idx.get(i).size(); j++)
-                res.setCharAt(idx.get(i).get(j), ch.get(i).get(j));
+        DSU sets=new DSU(s.length()+1);
+     HashMap<Integer,ArrayList<Integer>> index=new HashMap<>();
+             HashMap<Integer,ArrayList<Character>> parent=new HashMap<>();
+for(List<Integer> pair:pairs)
+{
+    sets.union(pair.get(0),pair.get(1));
+}
+for(int i=0;i<s.length();i++)
+{
+    int origin=sets.find(i);
+   if(index.containsKey(origin)==false){
+    index.put(origin,new ArrayList<>());
+    parent.put(origin,new ArrayList<>());
+    }
+        index.get(origin).add(i);
+    parent.get(origin).add(s.charAt(i));
+}
+        StringBuilder res=new StringBuilder(s);
+        for(Integer idx:index.keySet())
+        {
+             Collections.sort(parent.get(idx));
+            // System.out.println(parent.get(idx));
+                        System.out.println(index.get(idx));
+            for(int j=0;j<parent.get(idx).size();j++)
+            {
+                int k=index.get(idx).get(j);
+                char ch=parent.get(idx).get(j);
+                res.setCharAt(k,ch);
+            }
+            
         }
         return res.toString();
     }
