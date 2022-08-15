@@ -1,18 +1,19 @@
 class Solution {
     public int findDuplicate(int[] nums) {
-          // Approach 1: Indexing Based Hashing
-        int n = nums.length;
+        // Approach 2: Floyd Cycle
+        int slow = 0, fast = 0;
         
-        for(int i=0; i<n; i++){
-            int val = nums[i] % (n + 1);
-            nums[val - 1] += (n + 1);
+        while(true){
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if(slow == fast) break;
         }
         
-        for(int i=0; i<n; i++){
-            if(nums[i] / (n + 1) > 1)
-                return i + 1;
+        slow = 0;
+        while(slow != fast){
+            slow = nums[slow];
+            fast = nums[fast];
         }
-        
-        return n;
+        return slow;
     }
 }
