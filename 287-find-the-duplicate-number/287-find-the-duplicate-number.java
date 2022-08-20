@@ -1,19 +1,18 @@
 class Solution {
     public int findDuplicate(int[] nums) {
-        // Approach 2: Floyd Cycle
-        int slow = 0, fast = 0;
-        
-        while(true){
-            slow = nums[slow];
-            fast = nums[nums[fast]];
-            if(slow == fast) break;
-        }
-        
-        slow = 0;
-        while(slow != fast){
-            slow = nums[slow];
-            fast = nums[fast];
-        }
-        return slow;
+                int n=nums.length;
+        for(int i=0;i<nums.length;i++)
+        {
+            int idx=nums[i]%(n+1);
+            if(idx-1<n)
+            nums[idx-1]=nums[idx-1]+(n+1);
+        }   
+        for(int i=0;i<nums.length;i++)
+        {
+        // System.out.print(nums[i]+" ");
+            if(nums[i]/(n+1)>1)
+                return i+1;
+        } 
+        return n;
     }
 }
