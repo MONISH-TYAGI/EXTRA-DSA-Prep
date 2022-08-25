@@ -1,22 +1,24 @@
-
-class Solution {
+class Solution{
+    HashMap<Long, Integer> freq = new HashMap<>();
     
-    public int dfs(TreeNode root, Long tar){
+    public int helper(TreeNode root, Long targetSum, Long prefSum){
         if(root == null) return 0;
         
-        tar -= root.val;
+        prefSum += root.val;
+        int count = freq.getOrDefault(prefSum - targetSum, 0);
+        freq.put(prefSum, freq.getOrDefault(prefSum, 0) + 1);
         
-        int count = 0;
-        if(tar == 0)
-            count++;
+        count += helper(root.left, targetSum, prefSum);
+        count += helper(root.right, targetSum, prefSum);
         
-        return count + dfs(root.left, tar) + dfs(root.right, tar);
+        freq.put(prefSum, freq.getOrDefault(prefSum, 0) - 1); // Backtrack
+        
+        return count;
     }
     
-    public int pathSum(TreeNode root, int targetSum) {
-        Long tar=(long)targetSum;
+    public int pathSum(TreeNode root, int targetSum){
         if(root == null) return 0;
-        return dfs(root, tar) + pathSum(root.left, targetSum) + 
-            pathSum(root.right, targetSum);
+        freq.put(0l, 1);
+        return helper(root, 1l*targetSum, 0l);
     }
 }
