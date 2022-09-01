@@ -1,23 +1,33 @@
 class Solution {
-    public String minInteger(String num, int k) 
-{
-	char[] arr=num.toCharArray();
-	int n=arr.length;
-	for(int i=0;i<n;++i)
-	{
-		int pos=i;
-		for(int j=i+1;j<n&&j<=i+k;++j)
-			if(arr[pos]>arr[j])
-				pos=j;
-		char temp=arr[pos];
-		while(pos!=i)// the swaps are being performed.
-		{
-			arr[pos]=arr[pos-1];
-			--k;
-			--pos;
-		}
-		arr[pos]=temp;
-	}
-	return new String(arr);
-}
+    public String minInteger(String num, int k) {
+        
+        char[] ca = num.toCharArray();
+        helper(ca, k, 0);
+        return new String(ca);
+        
+    }
+    
+    
+    
+    public char[] helper(char[] num,int k,int i){
+        if(k==0  || i==num.length-1){
+            return num;
+        }
+        char min=num[i];
+        int index=i;
+        for(int j=i+1;j<Math.min(num.length,i+k+1);j++){
+            char n=num[j];
+            if(n<min){
+                    
+                    min=n;
+                    index=j;
+                }    
+            }
+        
+        for (int j = index; j>i; j--) {num[j]=num[j-1];}
+        num[i] = min;
+        
+        return helper(num,k-(index-i),i+1);  
+        
+    }
 }
