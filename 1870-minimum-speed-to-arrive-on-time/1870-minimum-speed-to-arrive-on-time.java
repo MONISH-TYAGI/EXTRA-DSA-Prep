@@ -9,8 +9,8 @@ class Solution {
             hrpass+=(dist[i]%speed==0)?0:1;
         }
         hrpass+=(dist[dist.length-1]*1.0/speed);
-                // if(speed==4)
-                    // System.out.println("hr "+hrpass+" bool "+(hrpass<=hr));
+                if(speed==4)
+                    System.out.println("hr "+hrpass+" bool "+(hrpass<=hr));
         return hrpass<=hr;
     }
     public int minSpeedOnTime(int[] dist, double hour) {
@@ -21,8 +21,8 @@ class Solution {
         while(left<=right)
         {
 int mid=left+((right-left)/2);
-    // if(mid<=9)
-        // System.out.println(mid);
+    if(mid<=9)
+        System.out.println(mid);
             if(isPossible(dist,hour,mid))
             {
                 ans=mid;
