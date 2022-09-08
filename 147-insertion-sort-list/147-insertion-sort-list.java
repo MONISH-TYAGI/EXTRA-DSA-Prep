@@ -11,23 +11,32 @@
 class Solution {
     public ListNode insertionSortList(ListNode head) {
        ListNode dummy=new ListNode(-1);
-        ListNode curr=head;
+ListNode curr=head.next;
+        ListNode first=dummy;
+        first.next=head;
+        head.next=null;
         while(curr!=null)
         {
+            first=dummy;
             ListNode temp=curr.next;
-            ListNode prev=dummy;
-            ListNode next=dummy.next;
-            while(next!=null)
+            if(curr.val<=first.next.val)
             {
-                if(next.val>curr.val)
-                    break;
-                prev=next;
-                next=next.next;
+                curr.next=first.next;
+                first.next=curr;
                 
+            }else
+            {
+            ListNode run=first.next;
+                ListNode prev=null;
+                while(run!=null&&run.val<curr.val){
+                    prev=run;
+                    run=run.next;
+                }
+                curr.next=run;
+                prev.next=curr;
             }
-            curr.next=next;
-            prev.next=curr;
-           curr=temp; 
+                
+            curr=temp;
         }
         return dummy.next;
     }
