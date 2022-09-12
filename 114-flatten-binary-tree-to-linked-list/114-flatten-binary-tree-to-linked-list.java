@@ -1,5 +1,3 @@
-
-
 class Solution {
     TreeNode prev = null;
 
@@ -8,11 +6,16 @@ class Solution {
             return;
         }
 
-        flatten(root.right);
-        flatten(root.left);
+        TreeNode ol = root.left;
+        TreeNode or = root.right;
 
-        root.left = null;
-        root.right = prev;
+        if(prev != null){
+            prev.left = null;
+            prev.right = root;
+        }
         prev = root;
+
+        flatten(ol);
+        flatten(or);
     }
 }
