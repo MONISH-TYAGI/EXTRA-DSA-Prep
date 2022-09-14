@@ -14,20 +14,30 @@
  * }
  */
 class Solution {
-        public int diameter(TreeNode root, int[] globalDia){
-        if(root == null) return 0;
-        
-        int lh = diameter(root.left, globalDia);
-        int rh = diameter(root.right, globalDia);
-        
-        // Global Variable Strategy or Travel & Change Strategy
-        globalDia[0] = Math.max(globalDia[0], lh + rh + 1); 
-        return Math.max(lh, rh) + 1;
+        static class Pair{
+int diameter=0;
+        int height=0;
+
+    }
+    public Pair helper(TreeNode root)
+    {
+        if(root==null) return new Pair();
+        Pair left=helper(root.left);
+        Pair right=helper(root.right);
+        Pair curr=new Pair();
+        curr.height=Math.max(left.height,right.height)+1;
+       int dia=0;
+if(root.left!=null&&root.right!=null)
+    dia=left.height+right.height;
+else if(root.left!=null)
+    dia=left.height;
+else if(root.right!=null)
+    dia=right.height;
+    curr.diameter=Math.max(dia,Math.max(left.diameter,right.diameter));
+      
+        return curr;
     }
     public int diameterOfBinaryTree(TreeNode root) {
-        if(root==null) return 0;
-        int[]globalDia=new int[1];
-        diameter(root,globalDia);
-        return globalDia[0]-1;
+                return helper(root).diameter;
     }
 }
