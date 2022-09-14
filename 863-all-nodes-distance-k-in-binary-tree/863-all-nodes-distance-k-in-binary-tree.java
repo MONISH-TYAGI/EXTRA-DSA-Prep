@@ -8,54 +8,57 @@
  * }
  */
 class Solution {
-    List<Integer> obj;
-    public  ArrayList<TreeNode> nodeToRootPath(TreeNode node, int data){
-      if(node == null) // negative base case 
-         return new ArrayList<>();
-      
-      if(node.val == data){ // positive base case
-         ArrayList<TreeNode> base = new ArrayList<>();
-         base.add(node);
-         return base;
-      }
-      
-      ArrayList<TreeNode> lres = nodeToRootPath(node.left, data);
-      if(lres.size() > 0){
-          lres.add(node);
-          return lres;
-      }
-      
-      ArrayList<TreeNode> rres = nodeToRootPath(node.right, data);
-      if(rres.size() > 0){
-          rres.add(node);
-          return rres;
-      }
-      
-      return new ArrayList<>();
-  }
-  
-  public  void printKLevelsDown(TreeNode node, int k, TreeNode blockage){
-    if(node == null || k < 0 || node == blockage) 
-        return;
-    if(k == 0){
-        obj.add(node.val);
-        return;
+    public List<TreeNode> find(TreeNode root,TreeNode target)
+    {
+        if(root==null) return new ArrayList<>();
+        if(root==target)
+        {
+            List<TreeNode> ans=new ArrayList<>();
+            ans.add(root);
+            return ans;
+        }
+        List<TreeNode> left=find(root.left,target);
+        if(left.size()>0)
+        {
+            left.add(root);
+            return left;
+        }
+        
+         List<TreeNode> right=find(root.right,target);
+        if(right.size()>0)
+        {
+            right.add(root);
+            return right;
+        }
+        return new ArrayList<>();
     }
-    
-    printKLevelsDown(node.left, k - 1, blockage);
-    printKLevelsDown(node.right, k - 1, blockage);
-  }
+    public void kLevelDown(TreeNode root,int k,List<Integer> ans,TreeNode blockage)
+    {
+        // System.out.println("hello");
+       if(k<0||root==null||root==blockage) return ;
+        if(k==0)
+        {
+            ans.add(root.val);
+            return ;
+        }
+            kLevelDown(root.left,k-1,ans,blockage);
+        kLevelDown(root.right,k-1,ans,blockage);
+    }
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        obj=new ArrayList<>();
-           ArrayList<TreeNode> n2rpath = nodeToRootPath(root, target.val);
-    
-    int distance = k;
-    for(int i=0; i<n2rpath.size(); i++){
-        if(distance < 0) break;
-        TreeNode blockage = (i == 0) ? null : n2rpath.get(i - 1);    
-        printKLevelsDown(n2rpath.get(i), distance, blockage);
-        distance--;
-    }
-        return obj;
+        List<TreeNode> obj=find(root,target);
+        List<Integer> ans=new ArrayList<>();
+        TreeNode blockage=null;
+for(int i=0;i<obj.size();i++)
+{
+    if(k<0) break;
+    TreeNode newRoot=obj.get(i);
+    if(i!=0)
+     blockage=obj.get(i-1);
+    else
+         blockage=null;
+    kLevelDown(newRoot,k,ans,blockage);
+    k--;
+}
+        return ans;
     }
 }
