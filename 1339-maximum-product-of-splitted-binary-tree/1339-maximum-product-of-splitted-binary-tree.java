@@ -14,38 +14,27 @@
  * }
  */
 class Solution {
-    long max;
-    public int replace(TreeNode root){
-        if(root==null)return 0;
-        
-        root.val=replace(root.left)+replace(root.right)+root.val;
-        return root.val;
+    long max=0;
+    public long helper1(TreeNode root)
+    {
+        if(root==null) return 0l;
+        long leftSum=helper1(root.left);
+        long rightSum=helper1(root.right);
+        return leftSum+rightSum+root.val*1l;
     }
-    
-    public void helper(TreeNode root, long total){
-        
-        if(root.left!=null){
-            helper(root.left,total);
-            max=Math.max(root.left.val * (total-root.left.val),max);
-            
-            
-        }
-        if(root.right!=null){
-            helper(root.right,total);
-            max=Math.max(root.right.val * (total-root.right.val),max);
-            
-        }
-        return;
-        
-        
+    public long helper2(TreeNode root,long totalSum)
+    {
+        if(root==null) return 0l;
+        long leftSum=helper2(root.left,totalSum);
+        long rightSum=helper2(root.right,totalSum);
+        long currVal=leftSum+rightSum+root.val*1l;
+        long prod=currVal*(totalSum-currVal);
+        max=Math.max(max,prod);
+        return currVal;
     }
-    
     public int maxProduct(TreeNode root) {
-        
-        max=0;
-        long t=replace(root);
-        helper(root,t);
-        return (int)(max%1000000007l);
-        
+   long totalSum=helper1(root); 
+   helper2(root,totalSum);
+        return (int)(max%1000000007);
     }
 }
