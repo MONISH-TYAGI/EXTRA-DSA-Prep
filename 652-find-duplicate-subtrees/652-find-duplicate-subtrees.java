@@ -1,23 +1,20 @@
 class Solution {
-    List<TreeNode> res;
-    HashMap<String, Integer> duplicates;
+    List<TreeNode> nodes;
+    HashMap<String,Integer> ans;
         
     public String DFS(TreeNode root){
-        if(root == null) return "#";
-        
-        String hash = root.val + "," + DFS(root.left) + "," + DFS(root.right);
-        if(duplicates.containsKey(hash) == true && duplicates.get(hash) == 1){
-            res.add(root);
-        }
-        
-        duplicates.put(hash, duplicates.getOrDefault(hash, 0) + 1);
-        return hash;
+        if(root==null) return "#";
+String currPreOrder=root.val+","+DFS(root.left)+","+DFS(root.right);
+    if(ans.containsKey(currPreOrder)==true&&ans.get(currPreOrder)==1)
+        nodes.add(root);
+        ans.put(currPreOrder,ans.getOrDefault(currPreOrder,0)+1);
+        return currPreOrder;
     }
     
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-        res = new ArrayList<>();    
-        duplicates = new HashMap<>();
+        nodes=new ArrayList<>();
+        ans=new HashMap<>();
         DFS(root);
-        return res;
+        return nodes;
     }
 }
