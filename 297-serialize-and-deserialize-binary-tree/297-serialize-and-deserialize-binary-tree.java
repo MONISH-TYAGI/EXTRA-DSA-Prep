@@ -1,50 +1,71 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
 public class Codec {
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        if(root == null) return "null,";
-        return root.val + "," + serialize(root.left) + serialize(root.right); 
+                if(root==null) return "null,";
+        return root.val+","+serialize(root.left)+serialize(root.right);
+    }
+    class Pair{
+        TreeNode node;
+        char state;
+        Pair(TreeNode node,char st)
+        {
+            this.node=node;
+            this.state=st;
+        }
     }
 
-    public static class Pair{
-        char state;
-        TreeNode node;
-        Pair(TreeNode node){
-            this.state = 'l';
-            this.node = node;
-        }
-    }
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        if(data.equals("null,") == true) return null; 
-            
-        Stack<Pair> stk = new Stack<>();
-        String[] tokens = data.split(",");   
-        TreeNode root = null;
-    
-        for(String token: tokens){
-            if(token.equals("null") == true){
-                if(stk.peek().state == 'l')
-                    stk.peek().state = 'r';
-                else stk.pop();
+        Stack<Pair> stk=new Stack<>();
+        String []arr=data.split(",");
+        TreeNode root=null;
+        for(String curr:arr)
+        {
+            if(curr.equals("null"))
+            {
+           if(stk.size()>0&&stk.peek().state=='l')
+                {
                     
-            } else {
-                TreeNode child = new TreeNode(Integer.parseInt(token));
-                if(stk.empty()){
-                    root = child;
-                } else {
-                    if(stk.peek().state == 'l'){
-                        stk.peek().node.left = child;
-                        stk.peek().state = 'r';
-                    } else {
-                        stk.peek().node.right = child;
-                        stk.pop();
-                    }
+                    stk.peek().state='r';
                 }
-                stk.push(new Pair(child));
+                else if(stk.size()>0&&stk.peek().state=='r')
+                {
+                    stk.pop();
+                }   
+            }else
+            {
+                TreeNode node=new TreeNode(Integer.parseInt(curr));
+                if(root==null) root=node;
+                if(stk.size()>0&&stk.peek().state=='l')
+                {
+                    stk.peek().node.left=node;
+                    stk.peek().state='r';
+                }
+                else if(stk.size()>0&&stk.peek().state=='r')
+                {
+                    stk.peek().node.right=node;
+                    stk.pop();
+                }
+                stk.push(new Pair(node,'l'));
             }
+            
+            
         }
-        
         return root;
     }
 }
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser = new Codec();
+// Codec deser = new Codec();
+// TreeNode ans = deser.deserialize(ser.serialize(root));
