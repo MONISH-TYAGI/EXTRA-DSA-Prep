@@ -24,17 +24,17 @@ class Solution {
     }
     public TreeNode helper(int []preorder,int []postorder,int preLeft,int preRight,int posLeft,int postRight)
     {
-        if(preLeft>preRight) return null;
-         if(preLeft==preRight) return new TreeNode(preorder[preLeft]);
-        TreeNode node=new TreeNode(preorder[preLeft]);
-       
-        if(preLeft+1>=preorder.length) return node;
-        int leftChild=preorder[preLeft+1];
-        int postIdx=find(postorder,leftChild);
-        int leftCount=postIdx-posLeft+1;
-        node.left=helper(preorder,postorder,preLeft+1,preLeft+leftCount,posLeft,postIdx);
-        node.right=helper(preorder,postorder,preLeft+leftCount+1,preRight,postIdx+1,postRight-1);
-        return node;
+        if(preRight<preLeft)return null;
+       if(preLeft>=preorder.length)return null;
+       TreeNode curr=new TreeNode(preorder[preLeft]);
+         if(preLeft==preRight) return curr;
+        // if(preLeft+1==preorder.length) return null;
+        int idx=find(postorder,preorder[preLeft+1]);
+        int leftCount=idx-posLeft+1;
+        curr.left=helper(preorder,postorder,preLeft+1,preLeft+leftCount,posLeft,idx);
+        curr.right=helper(preorder,postorder,preLeft+leftCount+1,preRight,idx+1,preRight-1);
+        return curr;
+        
     }
     public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
         return helper(preorder,postorder,0,preorder.length-1,0,postorder.length-1);
