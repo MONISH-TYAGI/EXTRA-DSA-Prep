@@ -1,12 +1,11 @@
 class Solution {
-    public TreeNode buildTree(int[] postorder, HashMap<Integer, Integer> inorder, int inL, int inR, int preIdx){
+    public TreeNode buildTree(int[] postorder, HashMap<Integer, Integer> inorder, int inL, int inR, int postL,int postR){
  if(inL > inR) return null;
-        
-        TreeNode curr = new TreeNode(postorder[preIdx]);
-        int inIdx = inorder.get(postorder[preIdx]);
-        
-        curr.left = buildTree(postorder, inorder, inL, inIdx - 1, preIdx -1-(inR-inIdx));
-        curr.right = buildTree(postorder, inorder, inIdx + 1, inR, preIdx -1);
+        if(postR>=postorder.length) return null;
+        TreeNode curr = new TreeNode(postorder[postR]);
+        int idx=inorder.get(postorder[postR]);
+curr.right=buildTree(postorder,inorder,idx+1,inR,postR-(inR-idx),postR-1);
+    curr.left=buildTree(postorder,inorder,inL,idx-1,postL,postR-(inR-idx)-1);
         return curr;
 
     }
@@ -17,7 +16,7 @@ class Solution {
         HashMap<Integer, Integer> hm = new HashMap<>();
         for(int i=0; i<inorder.length; i++) hm.put(inorder[i], i);
         
-        return buildTree(postorder, hm, 0, inorder.length - 1, postorder.length-1);
+        return buildTree(postorder, hm, 0, inorder.length - 1,0, postorder.length-1);
 
 
     }
