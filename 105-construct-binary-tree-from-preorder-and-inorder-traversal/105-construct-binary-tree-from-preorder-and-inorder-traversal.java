@@ -19,8 +19,8 @@ class Solution {
         if(inLeft>inRight) return null;
         TreeNode node=new TreeNode(preorder[preLeft]);
         int idx=hm.get(preorder[preLeft]);
-        node.left=helper(preorder,hm,inLeft,idx-1,preLeft+1,preLeft+(idx-inLeft));
-            node.right=helper(preorder,hm,idx+1,inRight,preLeft+(idx-inLeft)+1,preRight);
+node.left=helper(preorder,hm,inLeft,idx-1,preLeft+1,preLeft+idx-inLeft);
+        node.right=helper(preorder,hm,idx+1,inRight,preLeft+idx-inLeft+1,preRight);
             return node;
     }
     public TreeNode buildTree(int[] preorder, int[] inorder) {
