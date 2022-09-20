@@ -25,7 +25,7 @@ class Solution {
     public TreeNode helper(int []preorder,int []postorder,int preLeft,int preRight,int posLeft,int postRight)
     {
         if(preRight<preLeft)return null;
-       if(preLeft>=preorder.length)return null;
+       // if(preLeft>=preorder.length)return null;
        TreeNode curr=new TreeNode(preorder[preLeft]);
          if(preLeft==preRight) return curr;
         // if(preLeft+1==preorder.length) return null;
