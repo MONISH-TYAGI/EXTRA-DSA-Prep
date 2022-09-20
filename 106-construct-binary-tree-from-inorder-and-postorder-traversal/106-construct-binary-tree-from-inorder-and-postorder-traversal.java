@@ -4,8 +4,8 @@ class Solution {
         if(postR>=postorder.length) return null;
         TreeNode curr = new TreeNode(postorder[postR]);
         int idx=inorder.get(postorder[postR]);
-curr.right=buildTree(postorder,inorder,idx+1,inR,postR-(inR-idx),postR-1);
-    curr.left=buildTree(postorder,inorder,inL,idx-1,postL,postR-(inR-idx)-1);
+curr.left=buildTree(postorder,inorder,inL,idx-1,postL,postR-(inR-idx)-1);
+        curr.right=buildTree(postorder,inorder,idx+1,inR,postR-(inR-idx),postR-1);
         return curr;
 
     }
