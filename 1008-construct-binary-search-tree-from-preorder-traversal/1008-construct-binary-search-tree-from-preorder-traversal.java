@@ -14,27 +14,24 @@
  * }
  */
 class Solution {
-    int index = 0;
+    int idx=0;
+    public TreeNode helper(int []arr,int min,int max)
+    {
+        if(idx==arr.length) return null;
+
+        if(min<arr[idx]&&arr[idx]<max)
+        {
+
+            TreeNode curr=new TreeNode(arr[idx]);
+                            idx++;
+            curr.left=helper(arr,min,arr[idx-1]);
+                curr.right=helper(arr,arr[idx-1],max);
+            return curr;
+        }else
+             return null;
+        
+    }
     public TreeNode bstFromPreorder(int[] preorder) {
-        return construct(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        return helper(preorder,Integer.MIN_VALUE,Integer.MAX_VALUE);
     }
-    
-    public TreeNode construct(int[] pre, int min, int max){
-        if(index == pre.length){
-            return null;
-        } else if(pre[index] > min && pre[index] < max){
-            TreeNode node = new TreeNode();
-            
-            node.val = pre[index];
-            index++;
-            
-            node.left = construct(pre, min, node.val);
-            node.right = construct(pre, node.val, max);
-            
-            return node;
-        } else {
-            return null;
-        }
-    }
-    
 }
