@@ -14,30 +14,48 @@
  * }
  */
 class Solution {
-    class Pair {
-        boolean isBST = true;
-        long min = Long.MAX_VALUE;
-        long max = Long.MIN_VALUE;
-    }
-    
-    public boolean isValidBST(TreeNode root) {
-        Pair rp = helper(root);
-        return rp.isBST;
-    }
-    
-    public Pair helper(TreeNode node){
-        if(node == null){
-            return new Pair();
+    class Pair{
+        boolean isBST;
+        long min;
+        long max;
+        
+        Pair()
+        {
+            isBST=false;
+
         }
-        
-        Pair lp = helper(node.left);
-        Pair rp = helper(node.right);
-        
-        Pair mp = new Pair();
-        mp.min = Math.min(node.val, Math.min(lp.min, rp.min));
-        mp.max = Math.max(node.val, Math.max(lp.max, rp.max));
-        mp.isBST = lp.isBST & rp.isBST && node.val > lp.max && node.val < rp.min;
-        
-        return mp;
+        Pair(boolean x)
+        {
+            isBST=x;
+         min =Long.MAX_VALUE;
+            max=Long.MIN_VALUE;
+        }
+    }
+    // ArrayList<Integer> obj;
+    public Pair helper(TreeNode root)
+    {
+       
+        if(root==null) return new Pair(true);
+         // System.out.println("heloo");
+        Pair left=helper(root.left);
+        Pair right=helper(root.right);
+        Pair curr=new Pair();
+        if(root.val>left.max&&root.val<right.min)
+        {
+            if(left.isBST==true&&right.isBST==true)
+                curr.isBST=true;
+        }
+        // if(curr.isBST==false)obj.add(root.val);
+        curr.min=Math.min(root.val,Math.min(left.min,right.min));
+        curr.max=Math.max(root.val,Math.max(right.max,left.max));
+       return curr; 
+    }
+    public boolean isValidBST(TreeNode root) {
+        // obj=new ArrayList<>();
+        // System.out.println(obj);
+
+        Pair ans=helper(root);
+                // System.out.println(ans.min+" "+ans.max);
+        return ans.isBST;
     }
 }
