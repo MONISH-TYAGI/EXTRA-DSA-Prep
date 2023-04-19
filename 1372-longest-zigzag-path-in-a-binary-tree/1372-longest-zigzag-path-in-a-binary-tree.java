@@ -13,40 +13,41 @@
  *     }
  * }
  */
-
 class Solution {
-    public static class Pair{
-        int left, right;
-        Pair(int left, int right){
-            this.left = left;
-            this.right = right;
+    class Pair{
+        int left;
+        int right;
+        int max;
+        Pair()
+        {
+            left=0;
+            right=0;
+            max=0;
         }
+            
     }
-    int max = 0;
-    
-    public Pair dfs(TreeNode root){
-        if(root == null) return new Pair(0, 0);
-        
-        Pair curr = new Pair(0, 0);
-        
-        if(root.left != null){
-            Pair left = dfs(root.left);
-            curr.left = 1 + left.right;
-            max = Math.max(max, curr.left);
-        } 
-        
-        if(root.right != null){
-            Pair right = dfs(root.right);
-            curr.right = 1 + right.left;
-            max = Math.max(max, curr.right);
+    public Pair helper(TreeNode root)
+    { 
+        if(root.left==null&&root.right==null)
+            return new Pair();
+        // if(root.left==null||root.right==null)
+        //     return new Pair(0,0,0);
+        Pair ans=new Pair();
+        if(root.left!=null){
+        Pair left=helper(root.left);
+        ans.left=left.right+1;
+            ans.max=Math.max(ans.max,left.max);
         }
-        
-        return curr;
+        if(root.right!=null){
+        Pair right=helper(root.right);
+        ans.right=right.left+1;
+            ans.max=Math.max(ans.max,right.max);
+        }
+        ans.max=Math.max(ans.max,Math.max(ans.right,ans.left));
+// System.out.println(ans.left+" "+ans.right+" "+ans.max);
+        return ans;
     }
-    
     public int longestZigZag(TreeNode root) {
-        max = 0;
-        dfs(root);
-        return max;
+        return helper(root).max;
     }
 }
