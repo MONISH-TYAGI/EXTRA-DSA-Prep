@@ -11,34 +11,33 @@
  */
 class Solution {
 public:
-    vector<TreeNode*> generateTrees(int n) {
-        return buildTree(1, n);
-    }
-    vector<TreeNode*> buildTree(int start, int end) {
-	vector<TreeNode*> ans;
-        
-    // If start > end, then subtree will be empty so add NULL in the ans and return it.
-    if(start > end) {
-		ans.push_back(NULL);
+    vector<TreeNode*> helper(int start,int end)
+    {
+          vector<TreeNode *> ans;
+        if(start>end)
+        {
+             ans.push_back(NULL);
+            return ans;
+        }
+       
+        for(int i=start;i<=end;i++)
+        {
+            vector<TreeNode*> leftSubtree=helper(start,i-1);
+            vector<TreeNode*> rightSubtree=helper(i+1,end);
+            for(int j=0;j<leftSubtree.size();j++)
+            {
+                for(int k=0;k<rightSubtree.size();k++)
+                {
+                    TreeNode* curr=new TreeNode(i);
+                    curr->left=leftSubtree[j];
+                    curr->right=rightSubtree[k];
+                    ans.push_back(curr);   
+                }
+            }
+        }
         return ans;
     }
-
-    // Iterate through all values from start to end to construct left and right subtree recursively
-	for(int i = start; i <= end; i++) {
-		vector<TreeNode*> leftSubTree = buildTree(start, i - 1);    // Construct left subtree
-        vector<TreeNode*> rightSubTree = buildTree(i + 1, end);     // Construct right subtree
-            
-		// loop through all left and right subtrees and connect them to ith root  
-		for(int j = 0; j < leftSubTree.size(); j++) {
-			for(int k = 0; k < rightSubTree.size(); k++) {
-				TreeNode* root = new TreeNode(i);   // Create root with value i
-				root->left = leftSubTree[j];   // Connect left subtree rooted at leftSubTree[j]
-                root->right = rightSubTree[k];   // Connect right subtree rooted at rightSubTree[k]
-				ans.push_back(root);    // Add this tree(rooted at i) to ans data-structure
-			}
-		}
+    vector<TreeNode*> generateTrees(int n) {
+         return helper(1,n);
     }
-        
-	return ans;
-}
 };
