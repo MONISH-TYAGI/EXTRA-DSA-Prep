@@ -1,3 +1,4 @@
+// #define ll long long int
 // class Solution {
 // public:
 //     void dfs(int curr,int& bomb,vector<int>& check,vector<vector<int>> canDestroy)
@@ -16,9 +17,9 @@
 //         vector<vector<int>> canDestroy(n);
 //         for(int i=0;i<n;i++)
 //         {
-//             for(int j=0;j<n;j++)
+//             for(int j=i+1;j<n;j++)
 //             {
-//                 if(i==j) continue;
+//                 // if(i==j) continue
 //                 long double xsq=bombs[i][0]*1.0-bombs[j][0]*1.0;
 //                 xsq=xsq*xsq;
 //                long double ysq=bombs[i][1]-bombs[j][1];
@@ -31,10 +32,9 @@
 //                 if(dis<=r2)
 //                     canDestroy[j].push_back(i);
                 
-                
-//             }
+//             }                
 //         }
-        
+
 //         // for(int i=0;i<n;i++)
 //         // {
 //         //     cout<<i<<" "<<endl;
@@ -48,66 +48,60 @@
 //             int bomb=0;
 //             vector<int> check(n,-1);
 //             dfs(i,bomb,check,canDestroy);
+            
+//             cout<<bomb<<endl;
+         
 //             maxBomb=max(maxBomb,bomb);
+//                // if(bomb==n)break;
 //         }
 //         return maxBomb;
 //     }
 // };
 class Solution {
-public:
-    double calcDis(int& x1, int& y1, int& x2, int& y2){
-        
-        long double dis = sqrtl(1LL * (x1-x2)*(x1-x2) + 1LL * (y1-y2)*(y1-y2));
-        
-        return dis;
-    }
-    
-    void dfs(int node, vector<int>& visited,int& thisPathBombs, vector<int> canDetonate[]){
-        
-        visited[node] = 1;
-        thisPathBombs++;
-        
-        for(int i=0;i<canDetonate[node].size();i++){
-            
-            int cnode = canDetonate[node][i];
-            
-            if(visited[cnode] == -1){
-                dfs(cnode,visited,thisPathBombs,canDetonate);
-            }
+#define ll long long int
+    public:
+    void dfs(vector<vector<int>> &graph,vector<bool> &visited,int &c,int &i)
+    {
+        visited[i]=true;
+        c++;
+        for(int j=0;j<graph[i].size();j++)
+        {
+            if(!visited[graph[i][j]])
+             dfs(graph,visited,c,graph[i][j]);   
         }
     }
-    
     int maximumDetonation(vector<vector<int>>& bombs) {
-        
-        int n = bombs.size();
-        
-        vector<int> canDetonate[n];
-        
-        int mxBombs = 0;
-        
-        for(int i=0;i<n;i++){
-            for(int j=i+1;j<n;j++){
-                double dis = calcDis(bombs[i][0],bombs[i][1],bombs[j][0],bombs[j][1]);
-                double d1 = bombs[i][2] * 1.0;
-                double d2 = bombs[j][2] * 1.0;
-                
-                if(dis <= d1){
-                    canDetonate[i].push_back(j);
-                }
-                
-                if(dis <= d2){
-                    canDetonate[j].push_back(i);
+
+        int n=bombs.size();
+        vector<vector<int> > graph(n);
+        for(int i=0;i<n;i++)
+        {
+            ll x1,y1,r1;
+            x1=bombs[i][0];
+            y1=bombs[i][1];
+            r1=bombs[i][2];
+            for(int j=0;j<n;j++)
+            {
+                if(i!=j)
+                {
+                     ll x2,y2,r2;
+                     x2=abs(x1-bombs[j][0]);
+                     y2=abs(y1-bombs[j][1]);
+                    if(x2*x2+y2*y2<=r1*r1)
+                    {
+                        graph[i].push_back(j);
+                    }
                 }
             }
         }
-        
-        for(int i=0;i<n;i++) {
-            int thisPathBombs = 0;
-            vector<int> visited(n,-1);
-            dfs(i,visited,thisPathBombs,canDetonate);
-            mxBombs = max(mxBombs, thisPathBombs);
+        int ans=INT_MIN;
+        for(int i=0;i<n;i++)
+        {
+            int c=0;
+            vector<bool> visited(n,false);
+            dfs(graph,visited,c,i);
+            ans=max(ans,c);
         }
-        
-        return mxBombs;
+        return ans;
     }
 };
