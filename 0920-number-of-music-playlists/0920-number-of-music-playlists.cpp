@@ -14,8 +14,8 @@ public:
         return dp[usedSong][currPos]=total;
     }
     int numMusicPlaylists(int n, int goal, int k) {
- 
-        vector<vector<ll >> dp(101,vector<ll>(101,-1));
+        
+        vector<vector<ll >> dp(goal+1,vector<ll>(goal+1,-1));
         return (int)solve(0,0,goal,n,k,dp);
     }
 };
