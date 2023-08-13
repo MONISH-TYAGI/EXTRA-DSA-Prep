@@ -71,7 +71,8 @@ public:
             if(isExist(0,0,n,grid,mid,box)&&grid[0][0]>=mid)
             {
                  // cout<<left<<" "<<right<<" "<<mid<<endl;
-                ans=max(ans,mid);
+                // ans=max(ans,mid);
+                ans=mid;
                 left=mid+1;
                 
                
