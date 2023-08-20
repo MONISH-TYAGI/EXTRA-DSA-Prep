@@ -97,8 +97,8 @@ public:
     }
      bool check(vector<int> &edge,int sv,pair<int,int> &it)
     {
-        if(edge[0] == sv and edge[1]==it.first and edge[2]==it.second)return 1;
-        if(edge[1] == sv and edge[0]==it.first and edge[2]==it.second)return 1;
+        if(edge[0] == sv and edge[1]==it.first )return 1;
+        if(edge[1] == sv and edge[0]==it.first )return 1;
         return 0;
     }
     vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>>& edges) {
