@@ -55,11 +55,7 @@ public:
                     pq.pop();
                 }
                 else
-                {
-                    pair<char,int> st;
-                    st.first='-';
-                    a=st;
-                }
+                break;
             
 
                 if(pq.size()>0)
@@ -68,17 +64,13 @@ public:
                     pq.pop();
                 }
                 else
-                {
-                        pair<char,int> st;
-                    st.first='-';
-                    b=st;
-                }
+                break;
             
         }
-    if(a.first=='-'&&b.first=='-') return ans;
-    if(a.first=='-'||b.first=='-')
+    if(a.second==0&&b.second==0) return ans;
+    if(a.second==0||b.second==0)
     {
-        if(a.first!='-')
+        if(b.second==0)
         {
           if(a.second==1)
           {
@@ -106,7 +98,7 @@ public:
                  return "";
           }else
               return "";
-        }else if(b.first!='-')
+        }else if(a.second==0)
         {
              if(b.second==1)
           {
