@@ -2,7 +2,7 @@
 class TrieNode
 {
     public : 
-    unordered_map<int,TrieNode*> children;
+    unordered_map<string,TrieNode*> children;
     int cnt;
     TrieNode()
     {
@@ -24,7 +24,8 @@ public:
             int n=word.size();
             for(int i=0;i<word.size();i++)
             {
-                int node=word[i]*128+word[n-1-i];
+                string node = string(1, word[i]) + string(1, word[n-1-i]);
+              //  cout<<node<<endl;
                 if(curr->children.find(node)==curr->children.end())
                     curr->children[node]=new TrieNode();
                 curr=curr->children[node];
